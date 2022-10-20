@@ -1,3 +1,5 @@
+from os import name # Para cambiar el path según el S.O.
+
 '''
 Tablero := List(List(Int))
 0 := VACIO
@@ -213,21 +215,6 @@ def resultado(jugadores: dict, marcador: tuple) -> None:
   else: # Caso que haya un empate
     print('Empate')
 
-# tablero_lleno: Tablero -> Bool
-# Toma un tablero. Si esta lleno retorna True, caso contrario retorna False
-def tablero_lleno(tablero: list) -> bool:
-  fila = 0
-  continuar = True
-  # Recorre todas las posiciones mientras haya alguna ficha 
-  while fila < 8 and continuar:
-    columna = 0 # Reseteo de columnas
-    while columna < 8 and continuar:
-      if tablero[fila][columna] == 0: # Si hay un lugar vacío
-        continuar = False # El tablero no esta lleno
-      columna += 1
-    fila += 1
-  return continuar
-
 # convertir_fila: String -> Int
 # Toma un numero como string y retorna el numero como Int - 1
 '''
@@ -268,7 +255,7 @@ Si ambos pueden pasar con el tablero en dichas condiciones, entonces el juego
 termina.
 '''
 def fin_del_juego(tablero: list) -> bool:
-  if chequear_paso(tablero,1) and chequear_paso(tablero,2):
+  if chequear_paso(tablero, 1) and chequear_paso(tablero, 2):
     return True
   else:
     return False
@@ -284,7 +271,7 @@ def main(path: str) -> None:
   '''
   Guarda los jugadores en un diccionario cuya clave es el color de la ficha
   y el valor es el nombre del jugador. De la forma:
-  {B/N: nombre del jugador1, N/B: nombre del jugador2}
+  {B/N: nombre del jugador1, N/B: nombre del jugador2}.
   ''' 
   jugadores = {jugador1[1]: jugador1[0], jugador2[1]: jugador2[0]}
 
@@ -323,11 +310,14 @@ def main(path: str) -> None:
 
   imprimir_tablero(tablero)
   
-  if tablero_lleno(tablero) or fin_del_juego(tablero):
+  if fin_del_juego(tablero):
     marcador = contar_fichas(tablero) 
     resultado(jugadores, marcador)
   else: # Finalizo antes de tiempo (se podian realizar mas jugadas)
     print('El juego podria continuar y es turno de las ' +
           ('Blancas' if turno == 1 else 'Negras'))
 
-main('.\src\juego5.txt')
+if name == 'posix':
+  main('/src/juego5.txt')
+else:
+  main('.\\src\\juego5.txt')

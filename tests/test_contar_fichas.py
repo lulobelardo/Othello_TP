@@ -28,6 +28,6 @@ def test_contar_fichas():
               [0, 0, 0, 0, 0, 0, 0, 0],
               [0, 0, 0, 0, 0, 0, 0, 0]]
          
-  assert (1,4) == contar_fichas(tablero)
-  assert (6,5) == contar_fichas(tablero2)
-  assert (8,5) == contar_fichas(tablero3)
+  assert (1, 4) == contar_fichas(tablero)
+  assert (6, 5) == contar_fichas(tablero2)
+  assert (8, 5) == contar_fichas(tablero3)
