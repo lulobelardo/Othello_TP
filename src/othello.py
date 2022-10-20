@@ -1,12 +1,13 @@
 '''
 Tablero := List(List(Int))
+0 := VACIO
 1 := B (Blancas)
 2 := N (Negras)
 '''
 
 # crear_tablero: None -> Tablero
 # Retorna el tablero inicial
-def crear_tablero():
+def crear_tablero() -> list:
   return [[0, 0, 0, 0, 0, 0, 0, 0],
           [0, 0, 0, 0, 0, 0, 0, 0],
           [0, 0, 0, 0, 0, 0, 0, 0],
@@ -23,7 +24,7 @@ Toma un tablero.
 La funcion crea una matriz nueva, y luego copia -sin referenciar- cada fila del
 tablero original en copia_tablero, así modificar uno no modifica el otro.
 '''
-def copiar_tablero(tablero):
+def copiar_tablero(tablero: list) -> list:
   copia_tablero = [[], [], [], [], [], [], [], []]
   for indice, fila in enumerate(tablero):
     copia_tablero[indice] = fila[:]
@@ -38,7 +39,7 @@ Para ver si pasar es válido, la funcion chequea si efectivamente ninguno de los
 Si tan solo 1 movimiento es válido, entonces 'pasar' es incorrecto, termina de
 hacer chequeos y retorna falso.
 '''
-def chequear_paso(tablero, turno):
+def chequear_paso(tablero: list, turno: int) -> bool:
   # Para no modificar el tablero original
   copia_tablero = copiar_tablero(tablero)
   
@@ -52,7 +53,7 @@ def chequear_paso(tablero, turno):
     fila += 1
   return continuar
 
-# modificar_tablero: Tablero, (Int, Int), Int, Int -> None
+# modificar_tablero: Tablero, (Int, Int), Int, (Int, Int) -> None
 # Modifica segun la direccion indicada los valores del tablero correspondientes
 '''
 Toma como parametros el tablero, la posicion jugada (VALIDA), de quien es el
@@ -64,7 +65,8 @@ El parámetro 'direccion' es una tupla de dos numeros que pueden ser -1, 0 y 1.
 Los mismos reflejan la direccion fila/columna en la que me estoy desplazando
 respectivamente. La direccion (0, 0) no existe.
 '''
-def modificar_tablero(tablero, jugada, turno, direccion):
+def modificar_tablero(tablero: list, jugada: tuple, turno: int,
+                      direccion: tuple) -> None:
   # Asignaciones
   j_fila = jugada[0] # jugada_fila
   j_colum = jugada[1] # jugada_columna
@@ -109,7 +111,7 @@ entonces la jugada era efectivamente válida, la realiza y retorna True. Por
 otro lado, si el tablero NO se modificó, entonces la jugada era inválida, por
 lo que retorna False.
 '''
-def realizar_jugada(tablero, jugada, turno):
+def realizar_jugada(tablero: list, jugada: tuple, turno: int) -> bool:
   # Caso jugada fuera de rango
   if jugada[0] not in range(8) or jugada[1] not in range(8):
     return False
@@ -119,7 +121,7 @@ def realizar_jugada(tablero, jugada, turno):
 
   copia_tablero = copiar_tablero(tablero) # Copia a comparar luego
 
-  # Modifico el tablero en todas las direcciones
+  # Modifico (o no) el tablero en todas las direcciones
   # Derecha
   modificar_tablero(tablero, jugada, turno, (0, 1))
   # Izquierda
@@ -150,33 +152,34 @@ def realizar_jugada(tablero, jugada, turno):
 
 # cambiar_turno: Int -> Int
 # Cambia el turno, si era del 1 ahora es del 2, y viceversa
-def cambiar_turno(turno):
+def cambiar_turno(turno: int) -> int:
   return (2 if turno == 1 else 1)
 
 # imprimir_tablero: Tablero -> None
 # Imprime el tablero
-def imprimir_tablero(tablero):
+def imprimir_tablero(tablero: list) -> int:
   print('    A B C D E F G H')
   print('    ---------------')
   for i, fila in enumerate(tablero):
     print(i + 1, end=' | ')
     for valor in fila:
       if valor == 0:
-        print('·', end=' ')
+        print('·', end=' ') # Alternativas ' ' '-'
       elif valor == 1:
-        print('•', end=' ')
+        print('•', end=' ') # Alternativas 'B'
       elif valor == 2:
-        print('○', end=' ')
+        print('○', end=' ') # Alternativas 'N'
     print('|', i + 1)
   print('    ---------------')
   print('    A B C D E F G H')
+  print()
 
 # contar_fichas: Tablero -> (Int, Int)
 '''
 Toma el tablero (lleno o no) y retorna una tupla de numeros con la cantidad de
 fichas de cada jugador (color) tal que (blancas, negras).
 '''
-def contar_fichas(tablero):
+def contar_fichas(tablero: list) -> tuple:
   blancas = 0 # Contador fichas blancas
   negras = 0 # Contador fichas negras
   # Recorre cada posicion
@@ -197,9 +200,9 @@ puntos del blanco y negro respectivamente.
 Imprime en pantalla los puntos de cada jugador y el resultado del juego
 (empate, ganan blancas, ganan negras).
 '''
-def resultado(jugadores, marcador):
-  blancas = marcador[0] #Asigna la cantidad de fichas blancas
-  negras = marcador[1]  #Asigna la cantidad de fichas negras
+def resultado(jugadores: dict, marcador: tuple) -> None:
+  blancas = marcador[0] # Asigna la cantidad de fichas blancas
+  negras = marcador[1]  # Asigna la cantidad de fichas negras
   print('Fichas Blancas (' + jugadores['B'] + '): ' + str(blancas)) 
   print('Fichas Negras (' + jugadores['N'] + '): ' + str(negras))
   print() # Estética
@@ -212,7 +215,7 @@ def resultado(jugadores, marcador):
 
 # tablero_lleno: Tablero -> Bool
 # Toma un tablero. Si esta lleno retorna True, caso contrario retorna False
-def tablero_lleno(tablero):
+def tablero_lleno(tablero: list) -> bool:
   fila = 0
   continuar = True
   # Recorre todas las posiciones mientras haya alguna ficha 
@@ -235,7 +238,7 @@ Si es un entero, retorna el anterior a dicho valor, pues traduce el conteo
 es una letra o cualquier otro carater, retorna -1 como aviso de que es erróneo
 el dato (si toma '0' tambien es erróneo, por lo que no genera problema).
 '''
-def convertir_fila(caracter):
+def convertir_fila(caracter: str) -> bool:
   try:
     return int(caracter) - 1
   except ValueError:
@@ -249,7 +252,7 @@ debería ser una letra en el rango A-H.
 Retorna el valor asociado de cada letra al numero de columna.
 Si el dato es erroneo, retorna -1 como aviso del fallo.
 '''
-def convertir_columna(caracter):
+def convertir_columna(caracter: str) -> bool:
   #Diccionario de columnas con su representacion numerica
   letras = {'A':0, 'B':1, 'C':2, 'D':3, 'E':4, 'F':5, 'G':6, 'H':7}
   try:
@@ -264,16 +267,16 @@ Si no se pueden realizar jugadas retorna True, caso contrario retorna False.
 Si ambos pueden pasar con el tablero en dichas condiciones, entonces el juego
 termina.
 '''
-def fin_del_juego(tablero):
+def fin_del_juego(tablero: list) -> bool:
   if chequear_paso(tablero,1) and chequear_paso(tablero,2):
     return True
   else:
     return False
 
-def main():
+def main(path: str) -> None:
   tablero = crear_tablero() # Se crea el tablero inicial
 
-  f = open('.\src\juego1.txt', 'r') # Se abre el archivo para lectura
+  f = open(path, 'r') # Se abre el archivo para lectura
 
   # Guarda cada jugador en una lista con el nombre y con el color de ficha
   jugador1 = f.readline()[:-1].split(',')
@@ -289,42 +292,42 @@ def main():
   inicial = f.readline()[:-1]  #FLACO LABURA
   # Traslada ese valor a un número que indica el respectivo turno 
   turno = (1 if inicial == 'B' else 2) # 'B':1, 'N':2
-  pasar = 0
+  
+  pasar = 0 # Contador de veces que se 'pasa' de manera consecutiva
   continuar = True
-  hay_ganador = False
   while continuar:
-    line = f.readline()
-    if line: #mientras no sea EOF
-      if line != '\n':
+    line = f.readline() # Lee linea por linea
+    if line: # Mientras la jugada no sea EOF
+      if len(line) >= 2:
         fila = convertir_fila(line[1]) # int(line[1]) - 1
         columna = convertir_columna(line[0]) # letras[line[0]]
-        jugada = (fila, columna) #Se pasa la jugada a una tupla numerica (x,y)
+        jugada = (fila, columna) # Se pasa la jugada a una tupla numerica (x,y)
+        # Intenta realizar la jugada, y si puede la hace
         continuar = realizar_jugada(tablero, jugada, turno)
-        pasar = 0
-      else:
-        continuar = chequear_paso(tablero, turno)
-        if continuar:
+        pasar = 0 # Resetea el contador de 'paso'
+      elif line == '\n':
+        # Chequea si es válido haber 'pasado', si es válido sigue, sino termina
+        continuar = chequear_paso(tablero, turno) 
+        if continuar: # Si pasar es válido, aumento el contador
           pasar += 1
-      if continuar:
+      else: # La linea tiene un sólo caracter != '\n', movimiento inválido
+        continuar = False
+      if continuar: # Si el juego va a continuar, cambia el turno
         turno = cambiar_turno(turno)
-    else:
-      finalizo_antes_de_tiempo = True
+    else: # LLegó al final del archivo
       continuar = False
-    if pasar > 1:
-      #termina el juego y hay un ganador
-      hay_ganador = True
+    if pasar > 1: # Se 'paso' CORRECTAMENTE dos veces, termina el juego.
       continuar = False
   
   f.close() # Cierra el archivo
 
   imprimir_tablero(tablero)
   
-  print()
   if tablero_lleno(tablero) or fin_del_juego(tablero):
     marcador = contar_fichas(tablero) 
     resultado(jugadores, marcador)
-  else: #Finalizo antes de tiempo (se podian realizar mas jugadas)
+  else: # Finalizo antes de tiempo (se podian realizar mas jugadas)
     print('El juego podria continuar y es turno de las ' +
           ('Blancas' if turno == 1 else 'Negras'))
 
-main()
+main('.\src\juego5.txt')

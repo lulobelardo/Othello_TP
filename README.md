@@ -1,5 +1,5 @@
 # Othello
-Trabajo Práctico Othello/Reversi para Programación 2 por:
+Trabajo Práctico Othello/Reversi para Programación 2 realizado por:
 - Luciano Belardo
 - Ignacio Basualdo
 

@@ -30,7 +30,8 @@ def test_modificar_tablero():
          
   #Faltarian mas casos de prueba       
   modificar_tablero(tablero_0,(2,3),2,(1, 0))
-  modificar_tablero(tablero_1,(4,2),1,(0, 1))
   assert tablero_1 == tablero_0
+  
+  modificar_tablero(tablero_1,(4,2),1,(0, 1))
   assert tablero_2 == tablero_1
 
