@@ -282,17 +282,17 @@ def chequear_y_corregir_jugador(jugador: list) -> list:
     return []
   return jugador
 
-# main: String -> Int
+# main: String -> None
 # El juego de Othello como tal, toma un path de una partida y la 'juega'
 # Retorna 0 si la partida comenzó, y otro int si hubo algún error previo
-def main(path: str) -> int:
+def main(path: str) -> None:
   # Apertura del archivo
   f = None
   if os.path.isfile(path): # Si existe el archivo con ese path
     f = open(path, 'r') # Se abre el archivo para lectura
   else:
     print('\nEl path es incorrecto o el archivo es inexistente.\n')
-    return 1 # Finaliza con 'error' el juego
+    return None # Finaliza con 'error' el juego
   
   # Guarda cada jugador en una lista con el nombre y con el color de ficha
   jugador1 = f.readline().split(',')
@@ -304,10 +304,10 @@ def main(path: str) -> int:
   # Chequea la validez de los datos obtenidos
   if not jugador1 or not jugador2:
     print('\nAlguno de los jugadores esta mal ingresado.\n')
-    return 2 # Finaliza con 'error' el juego
+    return None # Finaliza con 'error' el juego
   if jugador1[1] == jugador2[1]:
     print('\nAmbos jugadores tienen el mismo color asignado.\n')
-    return 3 # Finaliza con 'error' el juego
+    return None # Finaliza con 'error' el juego
 
   '''
   Guarda los jugadores en un diccionario cuya clave es el color de la ficha
@@ -326,7 +326,7 @@ def main(path: str) -> int:
     turno = 2 # 'N': 2
   else: # No leyó ni N ni B
     print('\nNo esta correctamente indicado que jugador comienza.\n')
-    return 4 # Finaliza con 'error' el juego
+    return None # Finaliza con 'error' el juego
   
   # Asignaciones
   tablero = crear_tablero() # Crea el tablero
@@ -395,8 +395,6 @@ def main(path: str) -> int:
       print('El juego está incompleto.\n')
     print('El juego podria continuar y es turno de las ' +
          ('Blancas' if turno == 1 else 'Negras') + '.\n')
-  
-    return 0 # Finalizó correctamente el programa (El juego pudo iniciar)
 
 # El path varía según el SO
 main(('./src/' if os.name == 'posix' else '.\\src\\') + 'juego1.txt')
