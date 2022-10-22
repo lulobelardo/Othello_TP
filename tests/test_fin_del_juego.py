@@ -60,7 +60,3 @@ def test_fin_del_juego():
               [1, 1, 1, 1, 1, 1, 1, 0],
               [1, 1, 1, 1, 1, 1, 1, 1]]      
   assert True == fin_del_juego(tablero6)
-
-
-
-

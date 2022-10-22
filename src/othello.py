@@ -1,14 +1,13 @@
-from os import name # Para cambiar el path según el S.O.
+import os # Para cambiar el path según el S.O, y verificar validez del path
 
+# crear_tablero: None -> Tablero
+# Retorna el tablero inicial
 '''
 Tablero := List(List(Int))
 0 := VACIO
 1 := B (Blancas)
 2 := N (Negras)
 '''
-
-# crear_tablero: None -> Tablero
-# Retorna el tablero inicial
 def crear_tablero() -> list:
   return [[0, 0, 0, 0, 0, 0, 0, 0],
           [0, 0, 0, 0, 0, 0, 0, 0],
@@ -23,13 +22,13 @@ def crear_tablero() -> list:
 # Retorna una copia no referenciada del tablero
 '''
 Toma un tablero.
-La funcion crea una matriz nueva, y luego copia -sin referenciar- cada fila del
+Crea una matriz nueva, y luego copia -sin referenciar- cada fila del
 tablero original en copia_tablero, así modificar uno no modifica el otro.
 '''
 def copiar_tablero(tablero: list) -> list:
   copia_tablero = [[], [], [], [], [], [], [], []]
   for indice, fila in enumerate(tablero):
-    copia_tablero[indice] = fila[:]
+    copia_tablero[indice] = fila[:] # [:] para perder referencia
   return copia_tablero
 
 # chequear_paso: Tablero, Int -> Bool
@@ -37,14 +36,16 @@ def copiar_tablero(tablero: list) -> list:
 '''
 Toma como parámetros el tablero y de quien es el turno.
 Para ver si pasar es válido, la funcion chequea si efectivamente ninguno de los
-64 movimientos posibles es válido, caso en el que 'pasar' es correcto.
+64 movimientos posibles es válido, caso en el que 'pasar' es correcto y retorna
+True.
 Si tan solo 1 movimiento es válido, entonces 'pasar' es incorrecto, termina de
-hacer chequeos y retorna falso.
+hacer chequeos y retorna False.
 '''
 def chequear_paso(tablero: list, turno: int) -> bool:
-  # Para no modificar el tablero original
+  # Para no modificar el tablero original, trabaja sobre una copia
   copia_tablero = copiar_tablero(tablero)
   
+  # Recorre o todo el tablero o hasta que encuentre un movimiento válido
   continuar = True
   fila = 0
   while fila < 8 and continuar:
@@ -59,12 +60,12 @@ def chequear_paso(tablero: list, turno: int) -> bool:
 # Modifica segun la direccion indicada los valores del tablero correspondientes
 '''
 Toma como parametros el tablero, la posicion jugada (VALIDA), de quien es el
-turno y la direccion que quiero modificar (8 posibles).
+turno y la direccion que quiere modificar (8 posibles).
 La funcion hace el movimiento COMPLETO en una direccion indicada, es decir,
 voltea todas las fichas correspondientes en una direccion siempre y cuando haya
 fichas que voltear.
 El parámetro 'direccion' es una tupla de dos numeros que pueden ser -1, 0 y 1.
-Los mismos reflejan la direccion fila/columna en la que me estoy desplazando
+Los mismos reflejan la direccion fila/columna en la que se está desplazando
 respectivamente. La direccion (0, 0) no existe.
 '''
 def modificar_tablero(tablero: list, jugada: tuple, turno: int,
@@ -76,7 +77,7 @@ def modificar_tablero(tablero: list, jugada: tuple, turno: int,
   horiz = direccion[1] # Horizontal: variacion en las columnas
   
   delta_final = 0 # Representa la cantidad final de fichas a voltear
-  delta = 1 # Contador de fichas a cambiar
+  delta = 1 # Contador momentáneo/hipotético de fichas a cambiar
   
   continuar = True
   while continuar:
@@ -98,7 +99,7 @@ def modificar_tablero(tablero: list, jugada: tuple, turno: int,
     # Desplazo delta para analizar la siguiente posicion 
     delta += 1
   
-  # Cambiar el color de las fichas encerradas (delta_final lugares)
+  # Cambia el color de las fichas encerradas (delta_final lugares)
   for lugar in range(1, delta_final):
     tablero[j_fila + lugar * vert][j_colum + lugar * horiz] = turno
 
@@ -143,12 +144,13 @@ def realizar_jugada(tablero: list, jugada: tuple, turno: int) -> bool:
 
   '''
   Notesé que si son iguales, no se modificó por lo que pasar como parámetro el
-  tablero original no me afecta. Por otro lado, si se modificó, ya no hace
+  tablero original no afecta. Por otro lado, si se modificó, ya no hace
   falta que se vuelva a modificar, por lo que solo queda poner la ficha.
   '''
   if tablero == copia_tablero: # Si son iguales, la jugada es inválida
     return False
 
+  
   tablero[jugada[0]][jugada[1]] = turno # Coloco la ficha
   return True
 
@@ -159,18 +161,19 @@ def cambiar_turno(turno: int) -> int:
 
 # imprimir_tablero: Tablero -> None
 # Imprime el tablero
-def imprimir_tablero(tablero: list) -> int:
+def imprimir_tablero(tablero: list) -> None:
+  print()
   print('    A B C D E F G H')
   print('    ---------------')
   for i, fila in enumerate(tablero):
-    print(i + 1, end=' | ')
+    print(i + 1, end = ' | ')
     for valor in fila:
       if valor == 0:
-        print('·', end=' ') # Alternativas ' ' '-'
+        print('·', end = ' ') # Alternativas ' ' '-'
       elif valor == 1:
-        print('•', end=' ') # Alternativas 'B'
+        print('•', end = ' ') # Alternativas 'B'
       elif valor == 2:
-        print('○', end=' ') # Alternativas 'N'
+        print('○', end = ' ') # Alternativas 'N'
     print('|', i + 1)
   print('    ---------------')
   print('    A B C D E F G H')
@@ -184,6 +187,7 @@ fichas de cada jugador (color) tal que (blancas, negras).
 def contar_fichas(tablero: list) -> tuple:
   blancas = 0 # Contador fichas blancas
   negras = 0 # Contador fichas negras
+
   # Recorre cada posicion
   for fila in tablero:
     for ficha in fila:
@@ -200,7 +204,7 @@ Toma un diccionario que contiene ambos jugadores, tal que su clave es su color
 ('B' o 'N') y el valor es su nombre; y una tupla de enteros que contiene los
 puntos del blanco y negro respectivamente.
 Imprime en pantalla los puntos de cada jugador y el resultado del juego
-(empate, ganan blancas, ganan negras).
+(empate, ganan blancas o ganan negras).
 '''
 def resultado(jugadores: dict, marcador: tuple) -> None:
   blancas = marcador[0] # Asigna la cantidad de fichas blancas
@@ -214,6 +218,7 @@ def resultado(jugadores: dict, marcador: tuple) -> None:
     print('Ganan Negras (' + jugadores['N'] + ').')
   else: # Caso que haya un empate
     print('Empate')
+  print()
 
 # convertir_fila: String -> Int
 # Toma un numero como string y retorna el numero como Int - 1
@@ -224,6 +229,7 @@ Si es un entero, retorna el anterior a dicho valor, pues traduce el conteo
 'Humano' (comienza por 1) al informático (comienza por 0). Por otra parte, si
 es una letra o cualquier otro carater, retorna -1 como aviso de que es erróneo
 el dato (si toma '0' tambien es erróneo, por lo que no genera problema).
+Si toma '9', el movimiento igualmente será fuera de rango, por lo que no afecta
 '''
 def convertir_fila(caracter: str) -> bool:
   try:
@@ -251,8 +257,7 @@ def convertir_columna(caracter: str) -> bool:
 '''
 Toma un tablero.
 Si no se pueden realizar jugadas retorna True, caso contrario retorna False.
-Si ambos pueden pasar con el tablero en dichas condiciones, entonces el juego
-termina.
+Si ambos pueden pasar con el tablero parámetro, entonces el juego termina.
 '''
 def fin_del_juego(tablero: list) -> bool:
   if chequear_paso(tablero, 1) and chequear_paso(tablero, 2):
@@ -260,14 +265,50 @@ def fin_del_juego(tablero: list) -> bool:
   else:
     return False
 
-def main(path: str) -> None:
-  tablero = crear_tablero() # Se crea el tablero inicial
+# chequear_y_corregir_jugador: List(String) -> List(String)
+'''
+Toma una lista de string, que si esta bien ingresada consta de dos elementos:
+el primero un nombre y el segundo es el color de la ficha.
+Retorna lista vacia si el largo de la lista es distinto de 2 o si el segundo
+elemento no correspone a un color de ficha. Si los datos
+son correctos devuelve la lista original, despreciando los ' ' y el '\n' del
+color (lo considera correcto igualmente).
+Se considera que el nombre siempre es correcto tal como es.
+'''
+def chequear_y_corregir_jugador(jugador: list) -> list:
+  if len(jugador) != 2:
+    return []
+  jugador[1] = jugador[1].strip()
+  if jugador[1] not in ('N', 'B'):
+    return []
+  return jugador
 
-  f = open(path, 'r') # Se abre el archivo para lectura
-
+# main: String -> Int
+# El juego de Othello como tal, toma un path de una partida y la 'juega'
+def main(path: str) -> int:
+  # Apertura del archivo
+  f = None
+  if os.path.isfile(path): # Si existe el archivo con ese path
+    f = open(path, 'r') # Se abre el archivo para lectura
+  else:
+    print('\nEl path es incorrecto o el archivo es inexistente.\n')
+    return 1 # Finaliza con 'error' el juego
+  
   # Guarda cada jugador en una lista con el nombre y con el color de ficha
-  jugador1 = f.readline()[:-1].split(',')
-  jugador2 = f.readline()[:-1].split(',')
+  jugador1 = f.readline().split(',')
+  jugador1 = chequear_y_corregir_jugador(jugador1)
+
+  jugador2 = f.readline().split(',')
+  jugador2 = chequear_y_corregir_jugador(jugador2)
+
+  # Chequea la validez de los datos obtenidos
+  if not jugador1 or not jugador2:
+    print('\nAlguno de los jugadores esta mal ingresado.\n')
+    return 2 # Finaliza con 'error' el juego
+  if jugador1[1] == jugador2[1]:
+    print('\nAmbos jugadores tienen el mismo color asignado.\n')
+    return 3 # Finaliza con 'error' el juego
+
   '''
   Guarda los jugadores en un diccionario cuya clave es el color de la ficha
   y el valor es el nombre del jugador. De la forma:
@@ -276,48 +317,85 @@ def main(path: str) -> None:
   jugadores = {jugador1[1]: jugador1[0], jugador2[1]: jugador2[0]}
 
   # Asigna a inicial la letra del color de la ficha que inicia el juego (B\N)
-  inicial = f.readline()[:-1]  #FLACO LABURA
-  # Traslada ese valor a un número que indica el respectivo turno 
-  turno = (1 if inicial == 'B' else 2) # 'B':1, 'N':2
+  inicial = f.readline().strip() # (.strip() para despreciar ' ')
+  # Traslada ese valor a un número (1: B, 2: N) que indica el respectivo turno 
+  turno = 0
+  if inicial == 'B':
+    turno = 1 # 'B': 1
+  elif inicial == 'N':
+    turno = 2 # 'N': 2
+  else: # No leyó ni N ni B
+    print('\nNo esta correctamente indicado que jugador comienza.\n')
+    return 4 # Finaliza con 'error' el juego
   
+  # Asignaciones
+  tablero = crear_tablero() # Crea el tablero
   pasar = 0 # Contador de veces que se 'pasa' de manera consecutiva
-  continuar = True
+  continuar = True # True si el bucle continua, False si debe terminar
+  fin_de_archivo = False # Indica si el archivo se leyó por completo
+  pasar_incorrecto = False # Indica si se 'pasó' incorrectamente
+  error_de_formato = False # Indica si hay un error de FORMATO en el archivo
+  posicion_ilegal = False # Indica si la posicion es fuera de rango/ilegal
+  hay_lineas_extra = False # Indica si el archivo continua luego de finalizar
+
   while continuar:
-    line = f.readline() # Lee linea por linea
-    if line: # Mientras la jugada no sea EOF
-      if len(line) >= 2:
+    line = f.readline().replace(' ', '') # Lee linea por linea
+    if line: # Mientras la jugada no sea el EOF ('', string vacío)
+      # Si tiene 2 LETRAS EXACTAS, podria ser válido
+      if len(line) == 3 or (len(line) == 2 and line[-1] != '\n'):
         fila = convertir_fila(line[1]) # int(line[1]) - 1
         columna = convertir_columna(line[0]) # letras[line[0]]
-        jugada = (fila, columna) # Se pasa la jugada a una tupla numerica (x,y)
-        # Intenta realizar la jugada, y si puede la hace
+        jugada = (fila, columna) # Pasa la jugada a una tupla numerica (x, y)
+        # Intenta realizar la jugada, y si puede la hace, sino termina el juego
         continuar = realizar_jugada(tablero, jugada, turno)
+        if not continuar: # Si la juegada fue inválida, movimiento ilegal
+          posicion_ilegal = True
+          hay_lineas_extra = True # Por si ya habia terminado el juego
         pasar = 0 # Resetea el contador de 'paso'
-      elif line == '\n':
+      elif line == '\n': # Intenta 'pasar'
         # Chequea si es válido haber 'pasado', si es válido sigue, sino termina
         continuar = chequear_paso(tablero, turno) 
-        if continuar: # Si pasar es válido, aumento el contador
+        if continuar: # Si pasar fue válido, aumenta el contador
           pasar += 1
-      else: # La linea tiene un sólo caracter != '\n', movimiento inválido
-        continuar = False
+        else: # Especifica porque termino antes de tiempo
+          pasar_incorrecto = True
+      else: # La linea tiene 1 o +2 caracteres != '\n', movimiento inválido
+        error_de_formato = True
+        hay_lineas_extra = True # Por si ya habia terminado el juego
+        continuar = False # Termina el juego
       if continuar: # Si el juego va a continuar, cambia el turno
         turno = cambiar_turno(turno)
     else: # LLegó al final del archivo
-      continuar = False
-    if pasar > 1: # Se 'paso' CORRECTAMENTE dos veces, termina el juego.
-      continuar = False
-  
+      fin_de_archivo = True
+      continuar = False # Termina el juego
+    if pasar > 1: # Se 'paso' CORRECTAMENTE dos veces
+      if f.readline(): # Si pasaron 2 veces, pero sigue habiendo lineas
+        hay_lineas_extra = True
+      continuar = False # Termina el juego
+
   f.close() # Cierra el archivo
 
-  imprimir_tablero(tablero)
+  imprimir_tablero(tablero) # Imprime el tablero (hasta donde se modificó)
   
   if fin_del_juego(tablero):
+    if hay_lineas_extra:
+      print('ADVERTENCIA: El juego finalizó correctamente pero hay lineas ' +
+            'de más en el archivo.\n')
     marcador = contar_fichas(tablero) 
     resultado(jugadores, marcador)
   else: # Finalizo antes de tiempo (se podian realizar mas jugadas)
+    if posicion_ilegal:
+      print('Movimiento inválido: Posición ilegal.\n')
+    if pasar_incorrecto:
+      print('Movimiento inválido: "Pasar" no es válido en esta posición.\n')
+    if error_de_formato:
+      print('Movimiento inválido: Error de formato.\n')
+    if fin_de_archivo:
+      print('El juego esta incompleto.\n')
     print('El juego podria continuar y es turno de las ' +
-          ('Blancas' if turno == 1 else 'Negras'))
+         ('Blancas' if turno == 1 else 'Negras') + '.\n')
+  
+    return 0 # Finalizo correctamente el programa (El juego pudo iniciar)
 
-if name == 'posix':
-  main('/src/juego5.txt')
-else:
-  main('.\\src\\juego5.txt')
+# El path varía segun el SO
+main(('/src/' if os.name == 'posix' else '.\\src\\') + 'juego1.txt')

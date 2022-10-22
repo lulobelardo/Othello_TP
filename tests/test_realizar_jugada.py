@@ -23,7 +23,7 @@ def test_realizar_jugada():
   assert False == realizar_jugada(tablero0, (3, 3), 2)
   assert tablero0 == tablero1
 
-  tablero2 = [[0, 0, 0, 0, 0, 0, 0, 0],
+  tablero1 = [[0, 0, 0, 0, 0, 0, 0, 0],
               [0, 0, 0, 0, 0, 0, 0, 0],
               [0, 0, 0, 2, 0, 0, 0, 0],
               [0, 0, 0, 2, 2, 0, 0, 0],
@@ -33,9 +33,9 @@ def test_realizar_jugada():
               [0, 0, 0, 0, 0, 0, 0, 0]]
 
   assert True == realizar_jugada(tablero0, (2, 3), 2)
-  assert tablero0 == tablero2
+  assert tablero0 == tablero1
 
-  tablero3 = [[1, 1, 1, 1, 1, 1, 1, 1],
+  tablero0 = [[1, 1, 1, 1, 1, 1, 1, 1],
               [1, 2, 2, 2, 2, 2, 2, 1],
               [1, 2, 2, 2, 2, 2, 2, 1],
               [1, 2, 2, 2, 0, 2, 2, 1],
@@ -43,7 +43,8 @@ def test_realizar_jugada():
               [1, 2, 2, 2, 2, 2, 2, 1],
               [1, 2, 2, 2, 2, 2, 2, 1],
               [1, 1, 1, 1, 1, 1, 1, 1]]
-  tablero4 = [[1, 1, 1, 1, 1, 1, 1, 1],
+              
+  tablero1 = [[1, 1, 1, 1, 1, 1, 1, 1],
               [1, 2, 1, 2, 1, 2, 1, 1],
               [1, 2, 2, 1, 1, 1, 2, 1],
               [1, 1, 1, 1, 1, 1, 1, 1],
@@ -51,5 +52,5 @@ def test_realizar_jugada():
               [1, 2, 1, 2, 1, 2, 1, 1],
               [1, 1, 2, 2, 1, 2, 2, 1],
               [1, 1, 1, 1, 1, 1, 1, 1]]
-  assert True == realizar_jugada(tablero3, (3, 4), 1)
-  assert tablero3 == tablero4
+  assert True == realizar_jugada(tablero0, (3, 4), 1)
+  assert tablero0 == tablero1
