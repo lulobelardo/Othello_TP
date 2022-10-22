@@ -9,5 +9,5 @@ def test_crear_tablero():
              [0, 0, 0, 0, 0, 0, 0, 0],
              [0, 0, 0, 0, 0, 0, 0, 0],
              [0, 0, 0, 0, 0, 0, 0, 0]]
-         
+
   assert tablero == crear_tablero()
