@@ -1,4 +1,4 @@
-import os # Para cambiar el path según el S.O, y verificar validez del path
+import os # Para verificar validez del path
 
 # crear_tablero: None -> Tablero
 # Retorna el tablero inicial
@@ -396,5 +396,4 @@ def main(path: str) -> None:
     print('El juego podria continuar y es turno de las ' +
          ('Blancas' if turno == 1 else 'Negras') + '.\n')
 
-# El path varía según el SO
-main(('./src/' if os.name == 'posix' else '.\\src\\') + 'juego1.txt')
+main('./src/juego1.txt')

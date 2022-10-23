@@ -5,6 +5,7 @@ Trabajo Práctico Othello/Reversi para Programación 2 realizado por:
 
 ## Ejecución del Programa
 
+
 ```sh
 python ./src/othello.py
 ```
