@@ -1,5 +1,7 @@
+# [GitHub]
+
 # Othello
-Trabajo Práctico Othello/Reversi para Programación 2 LCC realizado por:
+Trabajo Práctico Othello/Reversi para Programación 2 realizado por:
 - Luciano Belardo
 - Ignacio Basualdo
 ---
@@ -27,3 +29,5 @@ python -m pytest
 ```sh
 python3 -m pytest
 ```
+
+[Github]: https://github.com/lulobelardo/Othello
