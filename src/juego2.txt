@@ -1,5 +1,5 @@
-Luciano Belardo,N
-Ignacio Basualdo,B
+Luciano Belardo,Negro
+Ignacio Basualdo,Blanco
 N
 D3
 E3

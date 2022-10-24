@@ -1,5 +1,5 @@
 Luciano Belardo,N
-Ignacio Basualdo,N
+Ignacio Basualdo,B
 B
 E3
 F3
@@ -62,3 +62,6 @@ B2
 A2
 
 H1
+H3
+J6
+K8

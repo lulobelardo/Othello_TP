@@ -396,4 +396,33 @@ def main(path: str) -> None:
     print('El juego podria continuar y es turno de las ' +
          ('Blancas' if turno == 1 else 'Negras') + '.\n')
 
+# Ejemplos
+# Termina por falta de movimientos (FUNCIONAL)
 main('./src/juego1.txt')
+
+# TODOS LOS JUEGOS.txt SON VÁLIDOS SI ESTÁN ESCRITOS CORRECTAMENTE
+# Problema (Solución)
+
+# No respeta el formato del color (N en vez de Negro, B en vez de Blanco)
+# main('./src/juego2.txt')
+
+# No respeta el formato del color que comienza la partida (N en vez de Negro)
+# main('./src/juego3.txt')
+
+# 'Pasa' cuando tiene movimientos disponibles (Linea 11: El enter está de más)
+# main('./src/juego4.txt')
+
+# Movimiento fuera de rango (Linea 15: G3 en vez de P0)
+# main('./src/juego5.txt')
+
+# Posicion ocupada o ilegal (Linea 15: D6 en vez de D3)
+# main('./src/juego6.txt')
+
+# Algun jugador está mal ingresado (Agrega la , en linaa 1)
+# main('./src/juego7.txt')
+
+# Hay lineas de más pero funciona igual (Borrar linea 65 en adelante)
+# main('./src/juego8.txt')
+
+# Path inexistente
+# main('./src/juegoinexistente.txt')

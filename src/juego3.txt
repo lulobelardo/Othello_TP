@@ -1,6 +1,6 @@
 Luciano Belardo,N
 Ignacio Basualdo,B
-N
+Negro
 E6
 F4
 C3
